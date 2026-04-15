@@ -2464,6 +2464,7 @@ MonoBehaviour:
   CurrentHealth: 100
   MaxHealth: 100
   healthBar: {fileID: 856968785}
+  deadUI: {fileID: 93617075}
 --- !u!1 &1764214107
 GameObject:
   m_ObjectHideFlags: 0

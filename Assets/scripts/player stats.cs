@@ -38,8 +38,10 @@ public class Playerstatts : MonoBehaviour
     {
         isAlive = false;
         GetComponent<ThirdPersonController>().enabled = false;
-       DeadUI.Show();
+       deadUI.Show();
         EnableRagdoll();
+        Cursor.lockState= CursorLockMode.None;
+        Cursor.visible=true; 
     }
 
 
