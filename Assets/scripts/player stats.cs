@@ -8,7 +8,8 @@ public class Playerstatts : MonoBehaviour
     [Header("Health")]
     [SerializeField] private float CurrentHealth =100f;
      [SerializeField] private float MaxHealth =100f;
-     [SerializeField] private HealthBar healthBar;   
+     [SerializeField] private HealthBar healthBar; 
+     [SerializeField] private DeadUI deadUI;  
 
      public bool isAlive{ get; private set;} = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -37,6 +38,7 @@ public class Playerstatts : MonoBehaviour
     {
         isAlive = false;
         GetComponent<ThirdPersonController>().enabled = false;
+       DeadUI.Show();
         EnableRagdoll();
     }
 
