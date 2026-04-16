@@ -11,6 +11,11 @@ public class Playerstatts : MonoBehaviour
      [SerializeField] private HealthBar healthBar; 
      [SerializeField] private DeadUI deadUI;  
 
+
+     [Header("FallDamage Setting")]
+     [SerializeField] private float minimumFallHeight = 3f;
+     [SerializeField] private float FallDamage = 7f; 
+
      public bool isAlive{ get; private set;} = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -55,6 +60,14 @@ public class Playerstatts : MonoBehaviour
         CurrentHealth += health;
     }
 
+    public void Land(float LastHeight)
+    {
+        float height = Vector3.Distance(Vector3.up * LastHeight, Vector3.up* transform.position.y);
+        if (height< minimumFallHeight || LastHeight < transform.position.y)
+        {
+            return; 
+        }
+    }
     public void DisableRagdoll()
     {
         GetComponent<Animator>().enabled = true;
