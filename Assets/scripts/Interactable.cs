@@ -8,7 +8,7 @@ public class Interactable : MonoBehaviour
     {
         if (destroyObject)
         {
-            Destroy(player);
+            Destroy(gameObject);
         }
     }
 }
