@@ -67,6 +67,7 @@ public class Playerstatts : MonoBehaviour
         {
             return; 
         }
+        TakeDamage(FallDamage*height);
     }
     public void DisableRagdoll()
     {

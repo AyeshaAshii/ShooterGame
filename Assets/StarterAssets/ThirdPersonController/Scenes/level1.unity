@@ -1238,7 +1238,7 @@ RectTransform:
   m_GameObject: {fileID: 856968783}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 0.55284977, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 742750375}
@@ -1247,7 +1247,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 250, y: -487}
+  m_AnchoredPosition: {x: 250, y: -498}
   m_SizeDelta: {x: 400, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &856968785
@@ -2670,6 +2670,8 @@ MonoBehaviour:
   MaxHealth: 100
   healthBar: {fileID: 856968785}
   deadUI: {fileID: 93617075}
+  minimumFallHeight: 3
+  FallDamage: 5
 --- !u!114 &1762682271
 MonoBehaviour:
   m_ObjectHideFlags: 0

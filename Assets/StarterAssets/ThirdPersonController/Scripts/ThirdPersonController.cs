@@ -52,6 +52,8 @@ namespace StarterAssets
         [Header("Player Grounded")]
         [Tooltip("If the character is grounded or not. Not part of the CharacterController built in grounded check")]
         public bool Grounded = true;
+        private bool HasLanded;
+        private float LastHeight;
 
         [Tooltip("Useful for rough ground")]
         public float GroundedOffset = -0.14f;
@@ -153,6 +155,8 @@ namespace StarterAssets
             // reset our timeouts on start
             _jumpTimeoutDelta = JumpTimeout;
             _fallTimeoutDelta = FallTimeout;
+
+            LastHeight= transform.position.y;
         }
 
         private void Update()
@@ -162,6 +166,18 @@ namespace StarterAssets
             JumpAndGravity();
             GroundedCheck();
             Move();
+            if(Grounded)
+            {
+                if(!HasLanded)
+                {
+                    GetComponent<Playerstatts>().Land(LastHeight);
+                }
+                HasLanded=true; 
+            }
+            else
+            {
+                HasLanded=false;
+            }
         }
 
         private void LateUpdate()
@@ -190,6 +206,10 @@ namespace StarterAssets
             if (_hasAnimator)
             {
                 _animator.SetBool(_animIDGrounded, Grounded);
+            }
+            if (Grounded && HasLanded)
+            {
+                LastHeight = transform.position.y;
             }
         }
 
