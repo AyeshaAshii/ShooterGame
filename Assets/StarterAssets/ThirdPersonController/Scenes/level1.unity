@@ -1712,6 +1712,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 977886108}
   m_CullTransparentMesh: 1
+--- !u!4 &1020036948 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4308170994332864, guid: a16eae0af83edd24a9e7bdf1d02099e3, type: 3}
+  m_PrefabInstance: {fileID: 2092682154}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1028513131
 GameObject:
   m_ObjectHideFlags: 0
@@ -2878,7 +2883,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1633922129596556, guid: a16eae0af83edd24a9e7bdf1d02099e3, type: 3}
       propertyPath: m_Name
-      value: jj_door_1_red (1)
+      value: jj_door_1_red
       objectReference: {fileID: 0}
     - target: {fileID: 1633922129596556, guid: a16eae0af83edd24a9e7bdf1d02099e3, type: 3}
       propertyPath: m_Layer
@@ -2938,6 +2943,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1633922129596556, guid: a16eae0af83edd24a9e7bdf1d02099e3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2092682157}
+    - targetCorrespondingSourceObject: {fileID: 1633922129596556, guid: a16eae0af83edd24a9e7bdf1d02099e3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2092682160}
     - targetCorrespondingSourceObject: {fileID: 1163890191618404, guid: a16eae0af83edd24a9e7bdf1d02099e3, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2092682159}
@@ -3017,6 +3025,25 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 4300000, guid: f0d4298dcac2ffd499747abaa06977ee, type: 3}
+--- !u!114 &2092682160
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2092682155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 255f59b426dc8e94aad4752e07ef0d0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  destroyObject: 0
+  Door: {fileID: 1020036948}
+  DoorSpeed: 5
+  OpenPosition: {x: 0, y: 0, z: 0}
+  OpenRotation: {x: 0, y: 0, z: 0, w: 1}
+  ClosePosition: {x: 0, y: 0, z: 0}
+  CloseRotation: {x: 0, y: 0, z: 0, w: 1}
 --- !u!1 &2133373778
 GameObject:
   m_ObjectHideFlags: 0

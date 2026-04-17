@@ -1,6 +1,6 @@
 
 using Unity.VisualScripting;
-using UnityEditor.Rendering;
+
 using UnityEngine;
 
 public class DoorInteraction : Interactable
@@ -30,7 +30,19 @@ public class DoorInteraction : Interactable
     {
         if (Opened)
         {
-            
+            Door. localPosition = Vector3.Lerp(Door.localPosition,OpenPosition,DoorSpeed*Time.deltaTime);
+            Door.localRotation = Quaternion.Lerp(Door.localRotation,OpenRotation,DoorSpeed*Time.deltaTime);
         }
+        else
+        {
+             Door. localPosition = Vector3.Lerp(Door.localPosition,ClosePosition,DoorSpeed*Time.deltaTime);
+            Door.localRotation = Quaternion.Lerp(Door.localRotation,CloseRotation,DoorSpeed*Time.deltaTime);
+        }
+
+    }
+    public override void Interact(GameObject player)
+    {
+        Opened=!Opened;
+        base.Interact(player);
     }
 }
