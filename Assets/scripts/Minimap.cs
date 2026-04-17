@@ -2,15 +2,10 @@ using UnityEngine;
 
 public class MiniMap : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
+  [SerializeField] Transform target;
+  [SerializeField] float followSpeed = 10f;
     void Update()
     {
-        
+        transform.position = Vector3.Lerp(transform.position, target .position , followSpeed*Time.deltaTime);
     }
 }
