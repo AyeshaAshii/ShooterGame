@@ -11,7 +11,8 @@ public class WeaponHandler : MonoBehaviour
     private ThirdPersonController controller;
     private Animator animator;
     private AudioSource source;
-    [SerializeField] CinemachineThirdPersonFollow follow;
+    [SerializeField] private GameObject followCamera;
+    private CinemachineThirdPersonFollow follow;
 
     [Header("Shooting")]
     public float firerate = 0.09f;
@@ -39,17 +40,19 @@ public class WeaponHandler : MonoBehaviour
     [SerializeField] private GameObject crosshair;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        animator = GetComponent<Animator>();
-        controller = GetComponent<ThirdPersonController>();
+  void Start()
+{
+    animator = GetComponent<Animator>();
+    controller = GetComponent<ThirdPersonController>();
 
-        defaultverticalArmLength = follow.VerticalArmLength;
-        defaultcameraside = follow.CameraSide;
-        defaultcameraDistance = follow.CameraDistance;
-        source = GetComponent<AudioSource>();
-    }
+    follow = followCamera.GetComponent<CinemachineThirdPersonFollow>(); // 👈 ADD HERE
 
+    defaultverticalArmLength = follow.VerticalArmLength;
+    defaultcameraside = follow.CameraSide;
+    defaultcameraDistance = follow.CameraDistance;
+
+    source = GetComponent<AudioSource>();
+}
     // Update is called once per frame
     void Update()
     {

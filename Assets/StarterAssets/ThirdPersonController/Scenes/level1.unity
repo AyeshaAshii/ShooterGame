@@ -2590,6 +2590,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+--- !u!1 &1402827284 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2070925441746177671, guid: a1a802ecaf6775746bb2a929fb554ad8, type: 3}
+  m_PrefabInstance: {fileID: 1402827283}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1416630838
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3167,7 +3172,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47567d7f489e5c24ab45dd45affdc593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  follow: {fileID: 0}
+  followCamera: {fileID: 1402827284}
   firerate: 0.09
   blendTime: 0.07
   stateName: Fire_Rifle
