@@ -3,108 +3,114 @@ using System.Collections;
 using UnityEngine.Animations.Rigging;
 using Unity.Cinemachine;
 using StarterAssets;
-using UnityEngine.Audio;
 
 public class WeaponHandler : MonoBehaviour
 {
-    [Header("references")]
+    [Header("References")]
     private ThirdPersonController controller;
     private Animator animator;
     private AudioSource source;
-    [SerializeField] private GameObject followCamera;
-    private CinemachineThirdPersonFollow follow;
+    [SerializeField] private CinemachineThirdPersonFollow followCamera;
+    public Camera mainCam;
+    public Transform barrelEnd;
 
     [Header("Shooting")]
-    public float firerate = 0.09f;
-    public float blendTime = 0.07f;
-    public string stateName = "Fire_Rifle";
+    public float fireRate = 0.1f;
+    public float shootRange = 100f;
+    public float damage = 10f;
+    public string fireAnim = "Fire_Rifle";
     public AudioClip fireClip;
-    public ParticleSystem muzzleflash;
-    public bool canShoot = true;
+    public ParticleSystem muzzleFlash;
+
+    private bool canShoot = true;
+
+    [Header("Ammo")]
+    public int currentAmmo = 30;
+    public int maxAmmo = 30;
+    public int reserveAmmo = 90;
 
     [Header("Aiming")]
-    [SerializeField] private float cameraTransitionSpeed = 7f;
-    [SerializeField] private float ikTransitionSpeed = 10f;
-    [SerializeField] private MultiAimConstraint aimIk;
-    [Space(10)]
-    [SerializeField] private float aimverticalArmLength = 0.2f;
-    [SerializeField] private float aimCameraSide = 0.75f;
-    [SerializeField] private float aimCameraDistance = 0.85f;
-    private float defaultverticalArmLength;
-    private float defaultcameraside;
-    private float defaultcameraDistance;
-
     public bool Aiming { get; private set; }
+    [SerializeField] private MultiAimConstraint aimIK;
+
+    [SerializeField] private float aimFOV = 40f;
+    private float defaultFOV;
 
     [Header("UI")]
     [SerializeField] private GameObject crosshair;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-  void Start()
-{
-    animator = GetComponent<Animator>();
-    controller = GetComponent<ThirdPersonController>();
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+        controller = GetComponent<ThirdPersonController>();
+        source = GetComponent<AudioSource>();
 
-    follow = followCamera.GetComponent<CinemachineThirdPersonFollow>(); // 👈 ADD HERE
+        defaultFOV = mainCam.fieldOfView;
+        currentAmmo = maxAmmo;
+    }
 
-    defaultverticalArmLength = follow.VerticalArmLength;
-    defaultcameraside = follow.CameraSide;
-    defaultcameraDistance = follow.CameraDistance;
-
-    source = GetComponent<AudioSource>();
-}
-    // Update is called once per frame
     void Update()
     {
-        // INPUT
         Aiming = Input.GetButton("Fire2");
-        bool shootInp = Input.GetButton("Fire1");
+        bool shootInput = Input.GetButton("Fire1");
 
-        
-
-        // ANIMATIONS
         animator.SetBool("Aiming", Aiming);
         controller.strafe = Aiming;
 
-        if (shootInp && Aiming)
-            Shoot();
-
-        // ADJUST CAMERA
-        float targetverticalArmLength = Aiming ? aimverticalArmLength : defaultverticalArmLength;
-        float targetside = Aiming ? aimCameraSide : defaultcameraside;
-        float targetDistance = Aiming ? aimCameraDistance : defaultcameraDistance;
-
-        follow.VerticalArmLength = Mathf.Lerp(follow.VerticalArmLength, targetverticalArmLength, cameraTransitionSpeed * Time.deltaTime);
-        follow.CameraSide = Mathf.Lerp(follow.CameraSide, cameraTransitionSpeed, cameraTransitionSpeed * Time.deltaTime);
-        follow.CameraDistance = Mathf.Lerp(follow.CameraDistance, targetDistance, cameraTransitionSpeed* Time.deltaTime);
-
-        
         crosshair.SetActive(Aiming);
 
+        // Camera FOV
+        mainCam.fieldOfView = Mathf.Lerp(
+            mainCam.fieldOfView,
+            Aiming ? aimFOV : defaultFOV,
+            10f * Time.deltaTime
+        );
 
-        float targetweight = Aiming ? 1 : 0;
-        aimIk.weight = Mathf.Lerp(aimIk.weight, targetweight, ikTransitionSpeed * Time.deltaTime);
+        // Shoot
+        if (shootInput && Aiming && canShoot && currentAmmo > 0)
+        {
+            Shoot();
+        }
 
-        // SHOOT
-        
+        // IK weight
+        aimIK.weight = Mathf.Lerp(aimIK.weight, Aiming ? 1 : 0, 10f * Time.deltaTime);
     }
 
-    private void Shoot() 
-    {
-        if (!canShoot)
-            return;
-        StartCoroutine("ResetFireRate");
-        source.PlayOneShot(fireClip);
-        muzzleflash.Play();
-        animator.CrossFadeInFixedTime(stateName, blendTime);
-        
-    }
-
-
-    private IEnumerator ResetFireRate()
+    void Shoot()
     {
         canShoot = false;
-        yield return new WaitForSeconds(firerate);
-        canShoot =true;
+
+        source.PlayOneShot(fireClip);
+        muzzleFlash.Play();
+        animator.CrossFadeInFixedTime(fireAnim, 0.05f);
+
+        Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, shootRange))
+        {
+            Debug.Log("Hit: " + hit.collider.name);
+
+            var health = hit.collider.GetComponentInParent<TargetHealth>();
+
+            if (health != null)
+            {
+                health.TakeDamage(damage);
+            }
+
+            GameObject impact = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+            impact.transform.position = hit.point;
+            Destroy(impact, 0.5f);
+        }
+
+        currentAmmo--;
+
+        StartCoroutine(FireRateReset());
+    }
+
+    IEnumerator FireRateReset()
+    {
+        yield return new WaitForSeconds(fireRate);
+        canShoot = true;
     }
 }
