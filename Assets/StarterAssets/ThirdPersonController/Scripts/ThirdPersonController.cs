@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.Mathematics;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM 
 using UnityEngine.InputSystem;
 #endif
@@ -17,6 +18,7 @@ namespace StarterAssets
         [Header("Player")]
         [Tooltip("Move speed of the character in m/s")]
         public float MoveSpeed = 2.0f;
+        public float StrafeSpeed = 0.4f;
 
         [Tooltip("Sprint speed of the character in m/s")]
         public float SprintSpeed = 5.335f;
@@ -91,6 +93,7 @@ namespace StarterAssets
         private float _rotationVelocity;
         private float _verticalVelocity;
         private float _terminalVelocity = 53.0f;
+        public bool strafe;
 
         // timeout deltatime
         private float _jumpTimeoutDelta;
@@ -273,6 +276,8 @@ namespace StarterAssets
 
             // normalise input direction
             Vector3 inputDirection = new Vector3(_input.move.x, 0.0f, _input.move.y).normalized;
+              Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
+
 
             // note: Vector2's != operator uses approximation so is not floating point error prone, and is cheaper than magnitude
             // if there is a move input rotate player when the player is moving
@@ -280,7 +285,26 @@ namespace StarterAssets
             {
                 _targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg +
                                   _mainCamera.transform.eulerAngles.y;
-                float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
+               
+            }
+            if(strafe)
+            {
+                targetSpeed = StrafeSpeed;
+                _targetRotation = _cinemachineTargetYaw; 
+
+                transform.rotation= Quaternion.Euler(0, _targetRotation, 0);
+
+                targetDirection= transform.forward * inputDirection.z +transform.right * inputDirection.x;
+
+                float X= _animator.GetFloat("X");
+                float Y= _animator.GetFloat("Y");
+
+                _animator.SetFloat("X", Mathf.Lerp(X, inputDirection.x, SpeedChangeRate*Time.deltaTime));
+                _animator.SetFloat("Y", Mathf.Lerp(Y, inputDirection.z, SpeedChangeRate*Time.deltaTime));
+            }
+            else
+            {
+                 float rotation = Mathf.SmoothDampAngle(transform.eulerAngles.y, _targetRotation, ref _rotationVelocity,
                     RotationSmoothTime);
 
                 // rotate to face input direction relative to camera position
@@ -288,8 +312,7 @@ namespace StarterAssets
             }
 
 
-            Vector3 targetDirection = Quaternion.Euler(0.0f, _targetRotation, 0.0f) * Vector3.forward;
-
+          
             // move the player
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
