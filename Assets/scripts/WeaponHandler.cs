@@ -3,114 +3,168 @@ using System.Collections;
 using UnityEngine.Animations.Rigging;
 using Unity.Cinemachine;
 using StarterAssets;
+using UnityEngine.Audio;
+using UnityEngine.UI;
 
 public class WeaponHandler : MonoBehaviour
 {
-    [Header("References")]
+    [Header("references")]
     private ThirdPersonController controller;
     private Animator animator;
     private AudioSource source;
-    [SerializeField] private CinemachineThirdPersonFollow followCamera;
+    [SerializeField] CinemachineThirdPersonFollow follow;
     public Camera mainCam;
     public Transform barrelEnd;
 
     [Header("Shooting")]
-    public float fireRate = 0.1f;
-    public float shootRange = 100f;
-    public float damage = 10f;
-    public string fireAnim = "Fire_Rifle";
+    public float firerate = 0.09f;
+    public float blendTime = 0.07f;
+    public string stateName = "Fire_Rifle";
     public AudioClip fireClip;
-    public ParticleSystem muzzleFlash;
+    public ParticleSystem muzzleflash;
+    public bool canShoot = true;
+    public float shootingRange = 100f;
+    public float bulletDamage = 10f;
 
-    private bool canShoot = true;
-
-    [Header("Ammo")]
-    public int currentAmmo = 30;
-    public int maxAmmo = 30;
-    public int reserveAmmo = 90;
+    [Header("Bullets")]
+    public int currentBullets;
+    public int bulletsInMag = 30;
+    public int totalBullets = 100;
+    public float reloadTime = 1f;
+    public GameObject impact;
 
     [Header("Aiming")]
-    public bool Aiming { get; private set; }
-    [SerializeField] private MultiAimConstraint aimIK;
+    [SerializeField] private float cameraTransitionSpeed = 7f;
+    [SerializeField] private float ikTransitionSpeed = 10f;
+    [SerializeField] private MultiAimConstraint aimIk;
+    [Space(10)]
+    [SerializeField] private float aimverticalArmLength = 0.2f;
+    [SerializeField] private float aimCameraSide = 0.75f;
+    [SerializeField] private float aimCameraDistance = 0.85f;
+    private float defaultverticalArmLength;
+    private float defaultcameraside;
+    private float defaultcameraDistance;
 
-    [SerializeField] private float aimFOV = 40f;
-    private float defaultFOV;
+    public bool Aiming { get; private set; }
+    public bool isReloading = false;
 
     [Header("UI")]
     [SerializeField] private GameObject crosshair;
+    [SerializeField] private Text bulletsText;
 
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         animator = GetComponent<Animator>();
         controller = GetComponent<ThirdPersonController>();
+
+        defaultverticalArmLength = follow.VerticalArmLength;
+        defaultcameraside = follow.CameraSide;
+        defaultcameraDistance = follow.CameraDistance;
         source = GetComponent<AudioSource>();
 
-        defaultFOV = mainCam.fieldOfView;
-        currentAmmo = maxAmmo;
+        currentBullets = bulletsInMag;
+        bulletsText.text = currentBullets.ToString() + " / " + totalBullets.ToString();
     }
 
+    // Update is called once per frame
     void Update()
     {
+        // INPUT
         Aiming = Input.GetButton("Fire2");
-        bool shootInput = Input.GetButton("Fire1");
+        bool shootInp = Input.GetButton("Fire1");
+        bool reloadInp = Input.GetKeyDown(KeyCode.R);
+        
 
+        // ANIMATIONS
         animator.SetBool("Aiming", Aiming);
         controller.strafe = Aiming;
 
+        
+
+        // ADJUST CAMERA
+        float targetverticalArmLength = Aiming ? aimverticalArmLength : defaultverticalArmLength;
+        float targetside = Aiming ? aimCameraSide : defaultcameraside;
+        float targetDistance = Aiming ? aimCameraDistance : defaultcameraDistance;
+
+        follow.VerticalArmLength = Mathf.Lerp(follow.VerticalArmLength, targetverticalArmLength, cameraTransitionSpeed * Time.deltaTime);
+        follow.CameraSide = Mathf.Lerp(follow.CameraSide, cameraTransitionSpeed, cameraTransitionSpeed * Time.deltaTime);
+        follow.CameraDistance = Mathf.Lerp(follow.CameraDistance, targetDistance, cameraTransitionSpeed* Time.deltaTime);
+
+        
         crosshair.SetActive(Aiming);
 
-        // Camera FOV
-        mainCam.fieldOfView = Mathf.Lerp(
-            mainCam.fieldOfView,
-            Aiming ? aimFOV : defaultFOV,
-            10f * Time.deltaTime
-        );
 
-        // Shoot
-        if (shootInput && Aiming && canShoot && currentAmmo > 0)
+        float targetweight = Aiming ? 1 : 0;
+        aimIk.weight = Mathf.Lerp(aimIk.weight, targetweight, ikTransitionSpeed * Time.deltaTime);
+
+        //RELOAD
+        if(reloadInp && !isReloading && totalBullets > 0)
         {
-            Shoot();
+            StartCoroutine(Reload());
         }
 
-        // IK weight
-        aimIK.weight = Mathf.Lerp(aimIK.weight, Aiming ? 1 : 0, 10f * Time.deltaTime);
+        // SHOOT
+        if (shootInp && Aiming && currentBullets > 0 && !isReloading)
+            Shoot();
+
+        bulletsText.text = currentBullets.ToString() + " / " + totalBullets.ToString();
+
     }
 
-    void Shoot()
+    private void Shoot() 
     {
-        canShoot = false;
-
+        if (!canShoot)
+            return;
+        StartCoroutine("ResetFireRate");
         source.PlayOneShot(fireClip);
-        muzzleFlash.Play();
-        animator.CrossFadeInFixedTime(fireAnim, 0.05f);
+        muzzleflash.Play();
+        animator.CrossFadeInFixedTime(stateName, blendTime);
 
         Ray ray = mainCam.ViewportPointToRay(new Vector3(0.5f, 0.5f));
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, shootRange))
+        Vector3 target;
+        if(Physics.Raycast(ray, out hit, shootingRange))
         {
-            Debug.Log("Hit: " + hit.collider.name);
+            target = hit.point;
 
-            var health = hit.collider.GetComponentInParent<TargetHealth>();
+            var health = hit.collider.GetComponent<TargetHealth>();
 
             if (health != null)
             {
-                health.TakeDamage(damage);
+                health.TakeDamage(bulletDamage);
             }
 
-            GameObject impact = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-            impact.transform.position = hit.point;
-            Destroy(impact, 0.5f);
+            GameObject bulletImpact = GameObject.Instantiate(impact, target, Quaternion.LookRotation(hit.normal));
+            Destroy(bulletImpact, 5f);
+        }
+        else
+        {
+            target = ray.GetPoint(shootingRange);
         }
 
-        currentAmmo--;
+        currentBullets--;
 
-        StartCoroutine(FireRateReset());
+        Debug.DrawRay(barrelEnd.position, target, Color.red, 1f);
+        
     }
 
-    IEnumerator FireRateReset()
+
+    private IEnumerator ResetFireRate()
     {
-        yield return new WaitForSeconds(fireRate);
-        canShoot = true;
+        canShoot = false;
+        yield return new WaitForSeconds(firerate);
+        canShoot =true;
+    }
+
+    private IEnumerator Reload()
+    {
+        isReloading = true;
+        yield return new WaitForSeconds(reloadTime);
+        int bulletsToLoad = bulletsInMag - currentBullets;
+        currentBullets += bulletsToLoad;
+        totalBullets -= bulletsToLoad;
+        isReloading=false;
     }
 }
