@@ -293,12 +293,9 @@ namespace StarterAssets
                 _targetRotation = _cinemachineTargetYaw; 
 
                 transform.rotation= Quaternion.Euler(0, _targetRotation, 0);
-
                 targetDirection= transform.forward * inputDirection.z +transform.right * inputDirection.x;
-
                 float X= _animator.GetFloat("X");
                 float Y= _animator.GetFloat("Y");
-
                 _animator.SetFloat("X", Mathf.Lerp(X, inputDirection.x, SpeedChangeRate*Time.deltaTime));
                 _animator.SetFloat("Y", Mathf.Lerp(Y, inputDirection.z, SpeedChangeRate*Time.deltaTime));
             }
@@ -310,8 +307,6 @@ namespace StarterAssets
                 // rotate to face input direction relative to camera position
                 transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
             }
-
-
           
             // move the player
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
