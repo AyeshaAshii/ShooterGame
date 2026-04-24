@@ -1,10 +1,13 @@
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Interactor : MonoBehaviour
 {
     [SerializeField] private GameObject InteractText;
+    [SerializeField] private GameObject dynamicText;
     [SerializeField] private KeyCode interactkey = KeyCode.E;
+
+
     private Playerstatts stats;
     private Interactable interactable; 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -16,7 +19,12 @@ public class Interactor : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        InteractText.SetActive(interactable != null);
+        InteractText.SetActive(interactable != null && !interactable.hasDynamicText);
+        dynamicText.SetActive(interactable != null && interactable. hasDynamicText);
+        if (interactable.hasDynamicText)
+        {
+            dynamicText.GetComponent<Text>().text = interactable.dynamicText;
+        }
         if(Input.GetKeyDown(interactkey)&& stats.isAlive)
         {
             Interact();

@@ -107,6 +107,16 @@ public class Playerstatts : MonoBehaviour
         }
     }
 
+    public void ReduceHunger(float food)
+    {
+        hunger -= food;
+    }
+
+    public void ReduceThirst(float water)
+    {
+        thirst -= water;
+    }
+
     
     public void DisableRagdoll()
     {
