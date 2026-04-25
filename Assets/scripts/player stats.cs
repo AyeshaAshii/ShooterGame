@@ -5,7 +5,7 @@ using UnityEngine;
 public class Playerstatts : MonoBehaviour
 {
     [Header("Health")]
-    [SerializeField] private float CurrentHealth =100f;
+    [SerializeField] public float CurrentHealth =100f;
      [SerializeField] private float MaxHealth =100f;
      [SerializeField] private HealthBar healthBar; 
      [SerializeField] private DeadUI deadUI;  
@@ -16,14 +16,14 @@ public class Playerstatts : MonoBehaviour
      [SerializeField] private float FallDamage = 7f; 
 
      [Header("Hunger")]
-     [SerializeField] private float hunger =0f;
+     [SerializeField] public float hunger =0f;
      [SerializeField] private float maxHunger= 100F;
      [SerializeField] private float  hungereDamage = 0.5f;
      [SerializeField] private float hungerRate = 0.5f;
 
 
       [Header("Thirst")]
-     [SerializeField] private float thirst =0f;
+     [SerializeField] public float thirst =0f;
      [SerializeField] private float maxThirst= 100F;
      [SerializeField] private float  thirstDamage = 0.5f;
      [SerializeField] private float thirstRate = 0.8f;    
