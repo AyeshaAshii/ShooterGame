@@ -21,7 +21,7 @@ public class Interactor : MonoBehaviour
     {
         InteractText.SetActive(interactable != null && !interactable.hasDynamicText);
         dynamicText.SetActive(interactable != null && interactable. hasDynamicText);
-        if (interactable.hasDynamicText)
+        if (interactable != null &&interactable.hasDynamicText)
         {
             dynamicText.GetComponent<Text>().text = interactable.dynamicText;
         }
