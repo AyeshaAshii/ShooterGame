@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 1
+  m_AmbientIntensity: 2
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: b5b6f5e1141bc0b47ab1fae50d9b58a3, type: 2}
@@ -43,7 +43,7 @@ RenderSettings:
 LightmapSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 13
-  m_BakeOnSceneLoad: 1
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -17981,6 +17981,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Soda bottle Glass A
       objectReference: {fileID: 0}
+    - target: {fileID: 8835592703282879395, guid: 0b6e65f0fca42c647855eb8962efa3df, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -24114,6 +24118,10 @@ PrefabInstance:
     - target: {fileID: 1992104595683069851, guid: f0271df749728104eac22c3d897fd8ce, type: 3}
       propertyPath: m_Name
       value: UI_EventSystem
+      objectReference: {fileID: 0}
+    - target: {fileID: 1992104595683069851, guid: f0271df749728104eac22c3d897fd8ce, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8063073397250431797, guid: f0271df749728104eac22c3d897fd8ce, type: 3}
       propertyPath: m_RootOrder
@@ -49190,8 +49198,8 @@ Light:
   m_Enabled: 1
   serializedVersion: 11
   m_Type: 1
-  m_Color: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
-  m_Intensity: 1.5
+  m_Color: {r: 0.056470275, g: 0.22275242, b: 0.4433962, a: 1}
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -57151,6 +57159,10 @@ PrefabInstance:
     - target: {fileID: 2081209941963662239, guid: 475c2b2992311884da42708c21b4e989, type: 3}
       propertyPath: m_Name
       value: Bundt Cake cut
+      objectReference: {fileID: 0}
+    - target: {fileID: 2081209941963662239, guid: 475c2b2992311884da42708c21b4e989, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -79499,6 +79511,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 1633922129596556, guid: a16eae0af83edd24a9e7bdf1d02099e3, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1827861296418864, guid: a16eae0af83edd24a9e7bdf1d02099e3, type: 3}
       propertyPath: m_Layer
       value: 8
@@ -81857,6 +81873,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: MainCamera
       objectReference: {fileID: 0}
+    - target: {fileID: 4130760351705191495, guid: 40010706058e0774bad79d65f3606d81, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -81937,6 +81957,10 @@ PrefabInstance:
     - target: {fileID: 6439942394564139143, guid: 7e8365404aef4494ca6f654c432221de, type: 3}
       propertyPath: m_Name
       value: PlayerFollowCamera
+      objectReference: {fileID: 0}
+    - target: {fileID: 6439942394564139143, guid: 7e8365404aef4494ca6f654c432221de, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8517284348668474835, guid: 7e8365404aef4494ca6f654c432221de, type: 3}
       propertyPath: m_LocalPosition.z
@@ -82039,6 +82063,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerArmature
       objectReference: {fileID: 0}
+    - target: {fileID: 8102642138320393587, guid: abd4805862bbcee42ad8f22740d8b857, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -82070,6 +82098,10 @@ PrefabInstance:
     - target: {fileID: 3925390179393022452, guid: f52d1810685f44140950ed9a70080e8d, type: 3}
       propertyPath: m_Name
       value: 'Game UI '
+      objectReference: {fileID: 0}
+    - target: {fileID: 3925390179393022452, guid: f52d1810685f44140950ed9a70080e8d, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4252022800438624811, guid: f52d1810685f44140950ed9a70080e8d, type: 3}
       propertyPath: m_Pivot.x
