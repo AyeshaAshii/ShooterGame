@@ -81988,6 +81988,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1473706641357493060, guid: 40010706058e0774bad79d65f3606d81, type: 3}
+      propertyPath: near clip plane
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3170624826533235245, guid: 40010706058e0774bad79d65f3606d81, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4130760351705191495, guid: 40010706058e0774bad79d65f3606d81, type: 3}
       propertyPath: m_Name
       value: MainCamera
@@ -82013,6 +82021,10 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 8338988565591873055}
+    - target: {fileID: 812960504655805387, guid: 7e8365404aef4494ca6f654c432221de, type: 3}
+      propertyPath: m_LookAt
+      value: 
+      objectReference: {fileID: 8720901371592069376}
     - target: {fileID: 956100774283188636, guid: 7e8365404aef4494ca6f654c432221de, type: 3}
       propertyPath: Damping.x
       value: 0.5
